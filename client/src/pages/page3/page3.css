@@ -1,0 +1,80 @@
+h1 {
+    color: #333;
+    text-align: center;
+    margin-top: -100px;
+    margin-bottom: 50px;
+}
+
+.form3 {
+    background-color: #fff;
+    padding: 8%; 
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 40%; 
+    max-width: 800px;
+    height: 450px;
+    margin: auto;
+    margin-top: 50px;
+    position: relative;
+}
+
+.b1, .b2, .b3, .b4, .b5 {
+    padding: 3px 10px;
+    border-radius: 100%;
+    font-size: 90px;
+    height: 75px;
+    width: 75px;
+    background-color: transparent;
+    border-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+
+.b1 { left: 50%; top: 57%; transform: translate(-50%, -50%) 
+    rotate(308deg) translate(150px) rotate(-308deg); }
+.b2 { left: 50%; top: 57%; transform: translate(-50%, -50%) 
+    rotate(20deg) translate(150px) rotate(-20deg); }
+.b3 { left: 50%; top: 57%; transform: translate(-50%, -50%) 
+    rotate(92deg) translate(150px) rotate(-92deg); }
+.b4 { left: 50%; top: 57%; transform: translate(-50%, -50%) 
+    rotate(164deg) translate(150px) rotate(-164deg); }
+.b5 { left: 50%; top: 57%; transform: translate(-50%, -50%) 
+    rotate(236deg) translate(150px) rotate(-236deg); }
+
+.b1:active, .b2:active, .b3:active, .b4:active, .b5:active {
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5)
+}
+
+.nextButton {
+    background-color: #c1c6c8;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nextButton:hover {
+    background-color: #acb5ba;
+}
+
+.exitButton3 {
+    position: relative;
+    left: -390px;
+    top: -110px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #c1c6c8;
+    
+}

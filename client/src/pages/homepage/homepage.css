@@ -1,0 +1,101 @@
+.form0 {
+    position: relative;
+    width: 100%;
+}
+.homeh2 {
+    position: absolute;
+    top: 100px;
+    font-size: 40px;
+}
+  
+.hbutton1, .hbutton2, .hbutton3, .hbutton4, .hbutton5  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    padding: 10px; /* Adjust the padding as needed */
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 180px; 
+    height: 180px; 
+    border-radius: 50%; 
+    line-height: 1; 
+}
+.hbutton1 {
+    background-color: rgb(128, 191, 179, 0.4);
+    left: 200px;
+    top:200px;
+}
+.hbutton2 {
+    background-color: rgb(91, 166, 154, 0.4);
+    left: 500px;
+    top:200px;
+}
+.hbutton3 {
+    background-color: rgb(18, 134, 125, 0.4);
+    left: 500px;
+    top:500px;
+}
+.hbutton4 {
+    background-color: rgb(10, 101, 94, 0.4);
+    left: 800px;
+    top:500px;
+}
+.hbutton5 {
+    background-color: rgb(5, 63, 59, 0.4);
+    left: 1100px;
+    top:500px;
+}
+
+.check1 {
+    position: absolute;
+    left: 280px;
+    top:305px;
+}
+.check2 {
+    position: absolute;
+    left: 580px;
+    top:305px;
+}
+.check3 {
+    position: absolute;
+    left: 580px;
+    top:605px;
+}
+.check4 {
+    position: absolute;
+    left: 880px;
+    top:605px;
+}
+.check5 {
+    position: absolute;
+    left: 1180px;
+    top:605px;
+}
+
+.arr1, .arr2, .arr3, .arr4, .arr5{
+    position:absolute;
+    font-size: 80px;
+    color: rgb(170, 170, 170);
+}
+.arr1 {
+    left: 400px;
+    top:170px;
+}
+.arr2 {
+    left: 550px;
+    top:310px;
+}
+.arr3 {
+    left: 700px;
+    top:470px;
+}
+.arr4 {
+    left: 1000px;
+    top:470px;
+}

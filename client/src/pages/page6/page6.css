@@ -1,0 +1,115 @@
+.form6 {
+    background-color: #fff;
+    padding: 12%; 
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 40%; 
+    max-width: 500px;
+    margin: auto;
+    margin-top: 75px;
+    position: relative;
+}
+
+
+.h6 {
+    color: #333;
+    text-align: center;
+    margin-top: -100px; 
+    position:absolute;
+    right: 250px;
+}
+
+.textarea6 {
+    width: 100%; 
+    padding: 80px; 
+    margin-bottom: 5%; 
+    margin-top: 2%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 12px;
+}
+
+
+.submitButton6 {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 1% 3%;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    position:absolute;
+    top: 450px;
+    left:375px
+}
+
+.submitButton6:hover {
+    background-color: #45a049;
+}
+
+.pageButton6 {
+    background-color: #c1c6c8;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 10px; 
+    right: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+.pageButton6:hover {
+    background-color: #acb5ba; 
+}
+
+
+.infoButton7 {
+    padding: 3px 10px;
+    border-radius:100%;
+    border-color: #e2e5e5;
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    font-size: 15px;
+    background-color: #e2e5e5;
+}
+
+.infoPopup7 {
+    visibility: hidden;
+    position: absolute;
+    background-color: #acb5ba;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    width: 200px;
+    top: 100%;
+    right: 0;
+  }
+  
+.infoButton7:hover .infoPopup7 {
+    visibility: visible;
+    opacity: 0.5;
+  }
+
+.exitButton6 {
+    position: relative;
+    left: -410px;
+    top: -420px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #c1c6c8;
+    
+}
+    

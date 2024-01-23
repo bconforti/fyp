@@ -1,0 +1,78 @@
+.sprintForm {
+    background-color: #fff;
+    padding: 2%; 
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 40%; 
+    max-width: 800px;
+    height: 450px;
+    margin: auto;
+    margin-top: 150px;
+    position: relative;
+}
+
+.sprintH1 {
+    margin-top: 40px;
+    white-space: nowrap;
+    left:175px;
+}
+.sprintH2 {
+    margin-top: 30px;
+    white-space: nowrap;
+    font-size: 20px;
+}
+
+.sprintNum {
+    position: absolute;
+    left:270px;
+    top: 200px;
+}
+.startDate {
+    position: absolute;
+    left:185px;
+    top: 300px;
+}
+.endDate {
+    position: absolute;
+    left:405px;
+    top: 300px;
+}
+
+.sprintBox {
+    position: absolute;
+    left:295px;
+    top: 230px;
+    height:20px;
+    width: 50px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+.startDateBox {
+    position: absolute;
+    left:185px;
+    top: 325px;
+    height:20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.endDateBox {
+    position: absolute;
+    left:400px;
+    top: 325px;
+    height:20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.sprintSubmitButton {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 2% 3%;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 50px; 
+    left: 280px
+}

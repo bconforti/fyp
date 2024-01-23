@@ -1,0 +1,97 @@
+.container7 {
+background-color: #fff;
+padding: 45px;
+border-radius: 12px;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+display: flex;
+height: 70vh;
+width: 70%;
+max-width: 1200px;
+margin: 80px auto;
+position: relative;
+overflow-x: hidden;
+overflow-y: auto;
+}
+
+.h7 {
+color: #333;
+text-align: center;
+margin-top: 0px;
+position: absolute;
+right: 20%;
+}
+
+.suggestionBox {
+position: relative;
+width: 90px;
+height: 90px;
+padding: 40px;
+margin: 10px 20px;
+display: flex;
+text-align: center;
+font-size: 13px;
+justify-content: center;
+background-color: rgb(173, 216, 230, 0.6);
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+cursor: move;
+user-select: none;
+overflow-x: hidden;
+overflow-y: auto;
+}
+.suggestionBox.dragging {
+opacity: 0.5;
+}
+
+.deleteButton7 {
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    background-color: transparent;
+    background-repeat: none;
+    border: none;
+    font-size: 15px;
+    }
+.voteButton7 {
+position: absolute;
+bottom: 5px;
+left: 70px;
+background-color: transparent;
+background-repeat: none;
+border: none;
+font-size: 18px;
+}
+
+.votesCount7 {
+position: absolute;
+bottom: 10px;
+left: 100px;
+font-size: 12px;
+font-weight: bold;
+}
+
+.pageButton7 {
+background-color: #c1c6c8;
+color: white;
+padding: 15px 30px;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-size: 15px;
+transition: background-color 0.3s ease;
+position: absolute;
+bottom: 50px;
+left: 50%;
+transform: translateX(-50%);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.exitButton7 {
+position: absolute;
+top: 20px;
+left: 20px;
+background-color: transparent;
+border: none;
+cursor: pointer;
+font-size: 20px;
+color: #c1c6c8;
+}

@@ -1,0 +1,78 @@
+.registerForm {
+    background-color: #fff;
+    padding: 8%; 
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 250px;
+    height: 250px;
+    margin: auto;
+    margin-top: 150px;
+    position: relative;
+}
+
+.registerh2 {
+    text-align: center;
+    margin-top: 40px;
+    position: absolute;
+    font-size: 30px;
+}
+
+.userLabel2, .passLabel2 {
+    text-align: center;
+    position: absolute;
+    left:210px;
+}
+.userLabel2{
+    margin-top:70px
+}
+.passLabel2 {
+    margin-top: 140px;
+}
+
+.userInput2, .passInput2 {
+    text-align: center;
+    position: absolute;
+    left:140px;
+    height: 20px;
+    width: 200px;
+    border-radius: 5px;
+    border-color: #667;
+    border: 1px solid #ccc;
+}
+.userInput2 {
+    margin-top: 90px;
+}
+.passInput2 {
+    margin-top: 160px;
+}
+
+.registerSubmit {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 2% 3%; 
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 220px;
+}
+.registerSubmit:hover {
+    background-color: #45a049;
+}
+
+.loginButton {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    font-style: italic;
+    top: 375px;
+    left: 145px;
+    color: #667;
+}
+
+.loginButton:hover {
+    text-decoration: underline;
+}

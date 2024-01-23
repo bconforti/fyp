@@ -1,0 +1,79 @@
+.container5 {
+    background-color: #fff;
+    padding: 45px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    height: 70vh;
+    width: 100%;
+    max-width: 1200px;
+    margin: 80px auto;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.hello {
+    color: #333;
+    text-align: center;
+    position: absolute;
+    left: 600px;
+    top: 50px;
+    font-size: 34px;
+
+}
+
+.barContainer {
+    background-color: #fff;
+    padding: 0px;
+    border-radius: 12px;
+    display: flex;
+    height: 50vh;
+    width: 500px;
+    max-width: 600px;
+    position: absolute;
+    top: 150px;
+    left: 100px;
+}
+
+.chartContainer {
+    background-color: #fff;
+    padding: 0px;
+    border-radius: 12px;
+    display: flex;
+    height: 50vh;
+    width: 400px;
+    position: absolute;
+    bottom: 10px;
+    right: 100px;
+}
+
+.backButton5 {
+    background-color: #c1c6c8;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 12%; 
+    left: 50%; 
+    transform: translate(-50%, 50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.backButton5:hover {
+    background-color: #acb5ba;
+}
+
+.exitButton5 {
+    position: relative;
+    left: -40px;
+    top: -295px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #c1c6c8;
+}
