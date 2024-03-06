@@ -7,9 +7,12 @@ import Page4 from '../page4/Page4';
 import Page5 from '../page5/Page5';
 import Page6 from "../page6/Page6";
 import Page7 from "../page7/Page7";
+import Page8 from "../page8/Page8";
+import Page9 from "../page9/Page9";
+import FinalPage1 from "./finalpage/FinalPage1";
 
 function Homepage({ currentSprint }) {
-    const [currentPage, setCurrentPage] = useState('Homepage');
+    const [currentPage, setCurrentPage] = useState('homepage');
 
     const handleNavigate = (page) => {
         setCurrentPage(page);
@@ -21,7 +24,7 @@ function Homepage({ currentSprint }) {
 
     return (
         <div>
-            {currentPage === 'Homepage' && (
+            {currentPage === 'homepage' && (
                 <form className="form0" onSubmit={handleSubmit}>
                     <h2 className="homeh2">Begin your retrospective</h2>
                     <div>
@@ -34,7 +37,7 @@ function Homepage({ currentSprint }) {
                     <p className="arr1">&#8680;</p>
 
                     <div>
-                        <button className="hbutton2">
+                        <button className="hbutton2" onClick={() => handleNavigate('page9')}>
                             Gather Data
                         </button>
                         <input type="checkbox" className="check2"></input>
@@ -60,7 +63,7 @@ function Homepage({ currentSprint }) {
                     <p className="arr4">&#8680;</p>
 
                     <div>
-                        <button className="hbutton5">
+                        <button className="hbutton5" onClick={() => handleNavigate('finalpage1')}>
                             Close the Retrospective
                         </button>
                         <input type="checkbox" className="check5"></input>
@@ -73,17 +76,50 @@ function Homepage({ currentSprint }) {
                     <Page1 currentSprint={currentSprint} />
                 </div>
             )}
-
+            {currentPage === 'page2' && (
+                <div>
+                    <Page2 currentSprint={currentSprint} />
+                </div>
+            )}
             {currentPage === 'page3' && (
                 <div>
                     <Page3 currentSprint={currentSprint}/>
                 </div>
             )}
-
-
+            {currentPage === 'page4' && (
+                <div>
+                    <Page4 currentSprint={currentSprint}/>
+                </div>
+            )}
+            {currentPage === 'page5' && (
+                <div>
+                    <Page5 currentSprint={currentSprint}/>
+                </div>
+            )}
             {currentPage === 'page6' && (
                 <div>
                     <Page6 currentSprint={currentSprint}/>
+                </div>
+            )}
+            {currentPage === 'page7' && (
+                <div>
+                    <Page7 currentSprint={currentSprint}/>
+                </div>
+            )}
+            {currentPage === 'page8' && (
+                <div>
+                    <Page8 currentSprint={currentSprint}/>
+                </div>
+            )}
+            {currentPage === 'page9' && (
+                <div>
+                    <Page9 currentSprint={currentSprint}/>
+                </div>
+            )}
+
+            {currentPage === 'finalpage1' && (
+                <div>
+                    <FinalPage1 currentSprint={currentSprint}/>
                 </div>
             )}
   

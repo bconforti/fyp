@@ -13,12 +13,15 @@ import Page5 from './pages/page5/Page5';
 import Page6 from './pages/page6/Page6';
 import Page7 from './pages/page7/Page7';
 import Page8 from './pages/page8/Page8';
+import Page9 from './pages/page9/Page9';
+import FinalPage from './pages/homepage/finalpage/FinalPage';
+import FinalPage1 from './pages/homepage/finalpage/FinalPage1';
 
 
 function App() {
   return (
     <div>
-      <SprintPage/>
+      < SprintPage/>
     </div>
     
   );

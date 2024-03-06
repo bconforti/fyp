@@ -22,7 +22,8 @@ const db = new sqlite3.Database("./database.db", sqlite3.OPEN_READWRITE | sqlite
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
             username TEXT UNIQUE,
-            password TEXT
+            password TEXT,
+            role TEXT
         )
     `, (err) => {
         if (err) {
@@ -68,7 +69,7 @@ const db = new sqlite3.Database("./database.db", sqlite3.OPEN_READWRITE | sqlite
     db.run(`
         CREATE TABLE IF NOT EXISTS emotion_counts (
             id INTEGER PRIMARY KEY,
-            emote TEXT UNIQUE,
+            emote TEXT,
             count INTEGER DEFAULT 0,
             sprint_id INTEGER REFERENCES sprints(id)
         )
@@ -82,7 +83,8 @@ const db = new sqlite3.Database("./database.db", sqlite3.OPEN_READWRITE | sqlite
     /* Creating score count table for the p4 emotion tracking (if it does not already exist) */
     db.run(`
         CREATE TABLE IF NOT EXISTS score_counts (
-            score INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY,
+            score INTEGER ,
             count INTEGER DEFAULT 0,
             sprint_id INTEGER REFERENCES sprints(id)
         )
@@ -115,11 +117,11 @@ const db = new sqlite3.Database("./database.db", sqlite3.OPEN_READWRITE | sqlite
 /* Inserting user+pass to table when user registers*/
 
 app.post('/api/register', (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, role } = req.body;
 
     db.run(
-        'INSERT INTO users (username, password) VALUES (?,?)',
-        [username, password],
+        'INSERT INTO users (username, password, role) VALUES (?,?, ?)',
+        [username, password, role],
         function (err) {
             if(err) {
                 console.error('Error adding user:', err.message);
@@ -331,14 +333,14 @@ app.post('/api/comments/replies', (req, res) => {
 /* START OF EMOTION TRACKING HANDLING */
 /* Fetches and handles the emotion submissions */
 app.post('/api/emotions', (req, res) => {
-    const { emote } = req.body;
+    const { emote, sprint_id } = req.body;
   
     db.run(
       `
-      INSERT INTO emotion_counts (emote, count)
-      VALUES (?, 1)
+      INSERT INTO emotion_counts (emote, count, sprint_id)
+      VALUES (?, 1, ?)
       `,
-      [emote],
+      [emote, sprint_id],
       function (err) {
         if (err) {
           console.error('Error updating emotion count:', err.message);
@@ -354,28 +356,35 @@ app.post('/api/emotions', (req, res) => {
   });
   
   
-
-/* Gets all emotion counts from the  table */
 app.get('/api/emotions', (req, res) => {
-    db.all('SELECT * FROM emotion_counts', (err,emotions) => {
+    db.get('SELECT * FROM sprints ORDER BY sprint_num DESC LIMIT 1', (err, currentSprint) => {
         if (err) {
-            console.error('Error fetching emotions, err.message');
-            res.status(500).json({ error: 'Internal Sever Error' });
-        } else {
-            res.json(emotions);
+            console.error('Error fetching most recent sprint', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
+
+        db.all('SELECT emote, SUM(count) as total_count FROM emotion_counts WHERE sprint_id = ? GROUP BY emote'
+        ,[currentSprint.id], (err, emotions) => {
+            if (err) {
+                console.error('Error fetching emotions:', err.message);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                res.json(emotions);
+            }
+        });
     });
 });
 
+
+
 /* Fetches and handles the score submissions */
 app.post('/api/scores', (req, res) => {
-    const { score } = req.body;
+    const { score, sprint_id } = req.body;
 
     db.run(`
-        INSERT INTO score_counts (score, count)
-        VALUES (?, 1)
-        ON CONFLICT(score) DO UPDATE SET count = count + 1
-    `, [score], function (err) {
+        INSERT INTO score_counts (score, count, sprint_id)
+        VALUES (?, 1, ?)
+    `, [score, sprint_id], function (err) {
         if (err) {
             console.error('Error updating score count:', err.message);
             return res.status(500).json({ error: 'Internal Server Error' });
@@ -390,13 +399,21 @@ app.post('/api/scores', (req, res) => {
 
 /* Gets all the score counts from the score table*/
 app.get('/api/scores', (req, res) => {
-    db.all('SELECT * FROM score_counts', (err,scores) => {
+    db.get('SELECT * FROM sprints ORDER BY sprint_num DESC LIMIT 1', (err, currentSprint) => {
         if (err) {
-            console.error('Error fetching scores:', err.message);
-            res.status(500).json({ error: 'Internal Sever Error' });
-        } else {
-            res.json(scores);
+            console.error('Error fetching most recent sprint', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
+
+        db.all('SELECT score, SUM(count) as total_count FROM score_counts WHERE sprint_id = ? GROUP BY score'
+        , [currentSprint.id], (err, scores) => {
+            if (err) {
+                console.error('Error fetching scores:', err.message);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                res.json(scores);
+            }
+        });
     });
 });
 
@@ -426,12 +443,12 @@ app.post("/api/nextsteps", (req, res) => {
 
 /* Fetching all suggestions */
 app.get('/api/nextsteps', (req, res) => {
-    db.get('SELECT * from sprints ORDER BY sprint_num DESC LIMIT 1', (err, currentSprint) => {
+    db.get('SELECT * FROM sprints ORDER BY sprint_num DESC LIMIT 1', (err, currentSprint) => {
         if (err) {
             console.error('Error fetching most recent sprint', err.message);
             return res.status(500).json({ error: 'Internal Server Error'})
         }
-    db.all('SELECT * FROM suggestions WHERE sprint_id =?', [currentSprint.id], (err,suggestions) => {
+    db.all('SELECT * FROM suggestions WHERE sprint_id =? ', [currentSprint.id], (err,suggestions) => {
         if (err) {
             console.error('Error fetching suggestions', err.message);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -501,7 +518,100 @@ app.delete('/api/nextsteps/:suggestion', (req, res) => {
     });
 });
 
+
+app.get('/api/top_score', (req, res) => {
+    db.get('SELECT * FROM sprints ORDER BY sprint_num DESC LIMIT 1', (err, currentSprint) => {
+        if (err) {
+            console.error('Error fetching most recent sprint:', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        db.all('SELECT * FROM score_counts WHERE sprint_id = ?', [currentSprint.id], (err, scorecounts) => {
+            if (err) {
+                console.error('Error fetching scores:', err.message);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+
+            const topScore = scorecounts.reduce((maxScore, currentScore) => {
+                return currentScore.count > maxScore.count ? currentScore : maxScore;
+            }, scorecounts[0]);
+
+            res.json(topScore);
+        });
+    });
+});
+
+app.get('/api/top_emotion', (req, res) => {
+    db.get('SELECT * FROM sprints ORDER BY sprint_num DESC LIMIT 1', (err, currentSprint) => {
+        if (err) {
+            console.error('Error fetching most recent sprint:', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        db.get(
+            'SELECT emote, COUNT(emote) AS count FROM emotion_counts WHERE sprint_id = ? GROUP BY emote ORDER BY count DESC LIMIT 1',
+            [currentSprint.id],
+            (err, topEmotion) => {
+                if (err) {
+                    console.error('Error fetching emotions:', err.message);
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
+
+                res.json([topEmotion]);
+            }
+        );
+    });
+});
+
+
+
+app.get('/api/top_comments', (req, res) => {
+    db.get('SELECT * FROM sprints ORDER BY sprint_num DESC LIMIT 1', (err, currentSprint) => {
+      if (err) {
+        console.error('Error fetching most recent sprint:', err.message);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
   
+      db.all(`
+      SELECT id, comment, outcome, votes, replies, sprint_id
+      FROM comments
+      WHERE sprint_id = ?
+      ORDER BY votes DESC
+      LIMIT 3;`, [currentSprint.id], (err, comments) => {
+        if (err) {
+          console.error('Error fetching top comments:', err.message);
+          return res.status(500).json({ error: 'Internal Server Error' });
+        }
+  
+        res.json(comments);
+      });
+    });
+});
+
+app.get('/api/top_suggestions', (req, res) => {
+    db.get('SELECT * FROM sprints ORDER BY sprint_num DESC LIMIT 1', (err, currentSprint) => {
+      if (err) {
+        console.error('Error fetching most recent sprint:', err.message);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+  
+      db.all(`
+      SELECT id, suggestion, votes, sprint_id
+      FROM suggestions
+      WHERE sprint_id = ?
+      ORDER BY votes DESC
+      LIMIT 3;`, [currentSprint.id], (err, suggestions) => {
+        if (err) {
+          console.error('Error fetching top suggestions:', err.message);
+          return res.status(500).json({ error: 'Internal Server Error' });
+        }
+  
+        res.json(suggestions);
+      });
+    });
+});
+  
+
+
 
 // Root path route handler
 app.get('/', (req, res) => {

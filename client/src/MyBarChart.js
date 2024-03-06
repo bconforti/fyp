@@ -18,8 +18,9 @@ const MyBarChart = ({ fetchData }) => {
         }
 
         const ctx = chartRef.current.getContext('2d');
+        
         const labels = data.map(score => score.score.toString());
-        const counts = data.map(score => score.count);
+        const counts = data.map(score => score.total_count);
 
         chartRef.current.chart = new Chart(ctx, {
           type: 'bar',

@@ -4,7 +4,7 @@ import Homepage from "../homepage/Homepage";
 import Page3 from "../page3/Page3";
 import Page5 from '../page5/Page5';
 
-function Page4({ onSubmit }) {
+function Page4({currentSprint}) {
     const [sliderValue, setSliderValue] = useState(0);
     const [scores, setScores] = useState([]);
     const [currentPage, setCurrentPage] = useState('page4')
@@ -29,9 +29,7 @@ function Page4({ onSubmit }) {
             headers: {
                 'Content-Type' : 'application/json',
             },
-            body: JSON.stringify({
-                score,
-            }),
+            body: JSON.stringify({score, sprint_id: currentSprint.sprint_num}),
         })
         .then((response) => {
             if (!response.ok) {
@@ -43,9 +41,6 @@ function Page4({ onSubmit }) {
         .catch((error) => console.error('Error submitting score:', error));
     }
 
-    useEffect(() => {
-        console.log("Score", scores);
-    }, [scores]);
 
     const handleNavigate = (page) => {
         setCurrentPage(page)
@@ -99,19 +94,19 @@ function Page4({ onSubmit }) {
 
             {currentPage === 'page3' && (
                 <div>
-                    <Page3/>
+                    <Page3 currentSprint={currentSprint}/>
                 </div>
             )}
 
             {currentPage === 'page5' && (
                 <div>
-                    <Page5/>
+                    <Page5 currentSprint={currentSprint}/>
                 </div>
             )}
 
             {currentPage === 'Homepage' && (
                     <div>
-                    <Homepage />
+                    <Homepage currentSprint={currentSprint}/>
                     </div>
                 )}
 

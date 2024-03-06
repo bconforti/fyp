@@ -6,20 +6,22 @@ import MyPieChart from '../../MyPieChart';
 import Homepage from '../homepage/Homepage';
 import Page4 from '../page4/Page4';
 
-function Page5() {
+function Page5({currentSprint}) {
   const [scores, setScores] = useState([]);
   const [emotions, setEmotions] = useState([]);
   const [currentPage, setCurrentPage] = useState('page5');
 
   useEffect(() => {
     // Fetch emotions data from your server
-    fetch('http://localhost:4000/api/emotions')
+    fetch('http://localhost:4000/api/emotions?sprintId=${currentSprintId}')
       .then(response => response.json())
-      .then(data => setEmotions(data))
+      .then(data => {
+        setEmotions(data);
+        console.log('Emotions data:', data);})
       .catch(error => console.error('Error fetching emotions:', error));
 
     // Fetch scores data from your server
-    fetch('http://localhost:4000/api/scores')
+    fetch('http://localhost:4000/api/scores?sprintId=${currentSprintId}')
       .then(response => response.json())
       .then(data => setScores(data))
       .catch(error => console.error('Error fetching scores:', error));
@@ -62,13 +64,13 @@ function Page5() {
 
         {currentPage === 'page4' && (
                     <div>
-                    <Page4 />
+                    <Page4 currentSprint={currentSprint}/>
                     </div>
                 )}
 
         {currentPage === 'Homepage' && (
             <div>
-            <Homepage />
+            <Homepage currentSprint={currentSprint}/>
             </div>
         )}
     </div>

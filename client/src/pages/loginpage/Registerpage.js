@@ -5,6 +5,7 @@ import "./registerpage.css"
 function Registerpage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
     const [currentPage, setCurrentPage] = useState('registerpage');
 
     const handleNavigate = (page) => {
@@ -20,11 +21,12 @@ function Registerpage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ username, password, role }),
             });
 
             if (response.ok) {
                 console.log('User registered successfully');
+                console.log({ username, password, role })
                 handleNavigate('loginpage')
             } else {
                 console.error('Error registering user:', response.statusText);
@@ -55,6 +57,16 @@ function Registerpage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
+            <label className="roleLabel"> Role </label>
+            <select 
+            className="roleInput"
+            onChange={(e) => setRole(e.target.value)}>
+            <option value="" disabled selected> Select Role</option>
+            <option value={"teamlead"}> Team Lead </option>
+            <option value={"scrummaster"}> Scrum Master </option>
+            <option value={"softwaredev"}> Software Developer </option>
+            <option value={"tester"}> Tester </option>
+            </select>
 
             <button
                 className="registerSubmit"

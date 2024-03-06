@@ -4,34 +4,25 @@ import Homepage from '../homepage/Homepage';
 import Page4 from '../page4/Page4';
 import Page5 from '../page5/Page5';
 
-function Page3() {
-  const [counts, setCounts] = useState({
-    b1: 0,
-    b2: 0,
-    b3: 0,
-    b4: 0,
-    b5: 0,
-  });
-  
+function Page3({currentSprint}) {
   const [currentPage, setCurrentPage] = useState('page3');
-  const [pressedButtons, setPressedButtons] = useState([]);
+  const [emotion, setEmotion] = useState([]);
+
+  const handleButtonClick = (e, btnName) => {
+    e.preventDefault();
+    setEmotion(btnName);
+    console.log("Button clicked:", btnName);
+  }
 
 
-
-  const handleButtonClick = (btnName) => {
-      console.log("Button clicked:", btnName);
-
-      setPressedButtons((prevButtons) => [...prevButtons, btnName]);
-
-      // Submit the selected emotion to the server
+  const handleSubmit = (e) => {
+    e.preventDefault();
       fetch('http://localhost:4000/api/emotions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          emote: btnName,
-        }),
+        body: JSON.stringify({emote: emotion, sprint_id: currentSprint.sprint_num}),
       })
         .then((response) => {
           if (!response.ok) {
@@ -40,17 +31,15 @@ function Page3() {
           return response.json();
         })
         .then((data) => {
-          console.log('Emotion submitted successfully:', data);
+          console.log('Emotion submitted successfully:');
+          console.log({emote: emotion, sprint_id: currentSprint.sprint_num});
         })
         .catch((error) => {
           console.error('Error submitting emotion:', error);
-        });
-  };
-  
+    });
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  
 
   const handleNavigate = () => {
     setCurrentPage(currentPage === 'page3' ? 'page4' : 'page3');
@@ -63,7 +52,7 @@ function Page3() {
   return (
     <div>
       {currentPage === 'page3' && (
-        <form className="form3" onSubmit={handleSubmit}>
+        <form className="form3">
           <h1> Emotion Tracking</h1>
           
           <h2> How are you feeling at this stage of development?</h2>
@@ -79,22 +68,28 @@ function Page3() {
             </div>
           </button>
           <div>
-            <button className="b1" onClick={() => handleButtonClick("b1")}>
+            <button className="b1" onClick={(e) => handleButtonClick(e, "b1")}>
               😆
             </button>
-            <button className="b2" onClick={() => handleButtonClick("b2")}>
+            <button className="b2" onClick={(e) => handleButtonClick(e, "b2")}>
               😅
             </button>
-            <button className="b3" onClick={() => handleButtonClick("b3")}>
+            <button className="b3" onClick={(e) => handleButtonClick(e, "b3")}>
               😶
             </button>
-            <button className="b4" onClick={() => handleButtonClick("b4")}>
+            <button className="b4" onClick={(e) => handleButtonClick(e, "b4")}>
               😓
             </button>
-            <button className="b5" onClick={() => handleButtonClick("b5")}>
+            <button className="b5" onClick={(e) => handleButtonClick(e, "b5")}>
               😡
             </button>
           </div>
+
+
+          <button 
+          className="submit3Button" 
+          onClick={handleSubmit}
+          > Submit </button>
 
           <button
             className='nextButton'
@@ -117,13 +112,13 @@ function Page3() {
 
       {currentPage === 'page4' && (
         <div>
-          <Page4/>
+          <Page4 currentSprint={currentSprint}/>
         </div>
       )}
 
       {currentPage === 'Homepage' && (
         <div>
-          <Homepage />
+          <Homepage currentSprint={currentSprint}/>
         </div>
       )}
       
