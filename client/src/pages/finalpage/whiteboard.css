@@ -1,0 +1,151 @@
+.finalWhiteContainer {
+    background-color: #fff;
+    padding: 45px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    height: 70vh;
+    width: 900px;
+    margin: 80px auto;
+    position: relative;
+    overflow-y: scroll;
+
+}
+
+.finalWhiteText {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #313131;
+    font-size: 22px;
+    line-height: 1.5;
+    text-align: center; 
+    margin-bottom: 500px;
+}
+
+.postItContainer {
+    position: relative;
+    background-color: #cde4eb8b;
+    padding: 10px;
+    border-radius: 8px;
+    width: 170px;
+    height: 170px;
+}
+
+.postItTextarea {
+    width: 170px;
+    height: 130px;
+    padding: 10px;
+    resize: none;
+    border: none;
+    background-color: transparent;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    position: absolute;
+    top: 30px;
+    overflow-wrap: break-word;
+}
+
+.postItButton {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: transparent;
+    color: #8d9295;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.addPostItButton {
+    background-color: transparent;
+    color: #626262;
+    padding: 9px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 50px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
+    transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 0px; 
+    right: 10px;
+    font-weight: bold;
+}
+
+
+.addPostItButton:hover {
+    visibility: visible;
+    opacity: 0.8;
+}
+
+.deleteAnswerButton {
+    position: absolute;
+    top: 3px;
+    left: 0px;
+    background-color: transparent;
+    background-repeat: none;
+    border: none;
+    font-size: 15px;
+    color: #c1c6c8;
+}
+
+
+.whiteboardBackButton {
+    background-color: #c1c6c8;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 10px; 
+    left: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.exitWhiteboardButton {
+    position: absolute;
+    top: 10px;
+    left:10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #c1c6c8;
+}
+
+.infoButtonWhiteboard {
+    padding: 3px 10px;
+    border-radius:100%;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 15px;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    border-color: rgb(0, 0, 0);
+}
+
+.infoPopupWhiteboard {
+    visibility: hidden;
+    position: absolute;
+    background-color: #acb5ba;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    width: 200px;
+    top: 100%;
+    right: 0;
+}
+  
+.infoButtonWhiteboard:hover .infoPopupWhiteboard {
+    visibility: visible;
+    opacity: 0.5;
+}

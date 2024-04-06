@@ -12,11 +12,11 @@
     overflow-x: hidden;
 }
 
-.hello {
+.header5 {
     color: #333;
     text-align: center;
     position: absolute;
-    left: 600px;
+    left: 500px;
     top: 50px;
     font-size: 34px;
 
@@ -31,7 +31,7 @@
     width: 500px;
     max-width: 600px;
     position: absolute;
-    top: 150px;
+    top: 250px;
     left: 100px;
 }
 
@@ -43,7 +43,7 @@
     height: 50vh;
     width: 400px;
     position: absolute;
-    bottom: 10px;
+    top: 175px;
     right: 100px;
 }
 
@@ -68,9 +68,9 @@
 }
 
 .exitButton5 {
-    position: relative;
-    left: -40px;
-    top: -295px;
+    position: absolute;
+    left: 0%;
+    top: 0%;
     background-color: transparent;
     border: none;
     cursor: pointer;

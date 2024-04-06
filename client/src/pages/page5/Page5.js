@@ -6,6 +6,7 @@ import MyPieChart from '../../MyPieChart';
 import Homepage from '../homepage/Homepage';
 import Page4 from '../page4/Page4';
 
+/* Emotion tracking display page */
 function Page5({currentSprint}) {
   const [scores, setScores] = useState([]);
   const [emotions, setEmotions] = useState([]);
@@ -38,8 +39,9 @@ function Page5({currentSprint}) {
     <div>
         {currentPage === 'page5' && (
             <div className="container5">
-            <h2 className="hello">Emotion Tracking</h2>
+            <h1 className="header5">Emotion Tracking</h1>
             <div className="barContainer">
+                {/* Use MyPieChart for emotion tracking */}
                 <MyBarChart fetchData={() => fetch('http://localhost:4000/api/scores').then(response => response.json())} />
             </div>
 
@@ -63,10 +65,10 @@ function Page5({currentSprint}) {
         )}
 
         {currentPage === 'page4' && (
-                    <div>
-                    <Page4 currentSprint={currentSprint}/>
-                    </div>
-                )}
+            <div>
+            <Page4 currentSprint={currentSprint}/>
+            </div>
+        )}
 
         {currentPage === 'Homepage' && (
             <div>

@@ -1,8 +1,10 @@
-h1 {
+.header3 {
     color: #333;
     text-align: center;
-    margin-top: -100px;
-    margin-bottom: 50px;
+    position: absolute;
+    top:5%;
+    left: 40%;
+
 }
 
 .form3 {
@@ -68,9 +70,9 @@ h1 {
 }
 
 .exitButton3 {
-    position: relative;
-    left: -390px;
-    top: -110px;
+    position: absolute;
+    left: 0%;
+    top: 0%;
     background-color: transparent;
     border: none;
     cursor: pointer;

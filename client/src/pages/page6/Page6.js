@@ -5,6 +5,7 @@ import Homepage from '../homepage/Homepage'
 import Page7 from "../page7/Page7";
 
 
+/* Suggestion page - user can enter what they suggest needs to be changed for the next sprint */
 function Page6({currentSprint}) {
     const [suggestion, setSuggestion] = useState('');
     const [currentPage, setCurrentPage] = useState('page6');
@@ -46,7 +47,7 @@ function Page6({currentSprint}) {
         <div>
             {currentPage === 'page6' && (
                 <form className="form6" onSubmit={handleSubmit}>
-                    <h1 className="h6"> Next steps </h1>
+                    <h1 className="header6"> Next steps </h1>
                     <label className="label6"> Enter suggestion for next sprint: </label>
 
                     <textarea
@@ -74,9 +75,9 @@ function Page6({currentSprint}) {
                     </button>
 
                     <button
-                    className="infoButton7">
+                    className="infoButton6">
                     i
-                    <div className="infoPopup7">
+                    <div className="infoPopup6">
                     Add any suggestions on how to improve during the next sprint.
                     </div>
                     </button>

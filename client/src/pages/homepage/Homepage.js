@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import './homepage.css';
 import Page1 from '../page1/Page1';
 import Page2 from '../page2/Page2';
@@ -9,10 +9,12 @@ import Page6 from "../page6/Page6";
 import Page7 from "../page7/Page7";
 import Page8 from "../page8/Page8";
 import Page9 from "../page9/Page9";
-import FinalPage1 from "./finalpage/FinalPage1";
+import FinalPage1 from "../finalpage/FinalPage1";
 
-function Homepage({ currentSprint }) {
+function Homepage({ currentSprint, jiraInstance }) {
     const [currentPage, setCurrentPage] = useState('homepage');
+
+
 
     const handleNavigate = (page) => {
         setCurrentPage(page);
@@ -25,6 +27,7 @@ function Homepage({ currentSprint }) {
     return (
         <div>
             {currentPage === 'homepage' && (
+                <div className="homepageContainer">
                 <form className="form0" onSubmit={handleSubmit}>
                     <h2 className="homeh2">Begin your retrospective</h2>
                     <div>
@@ -69,6 +72,7 @@ function Homepage({ currentSprint }) {
                         <input type="checkbox" className="check5"></input>
                     </div>
                 </form>
+                </div>
             )}
 
           {currentPage === 'page1' && (
@@ -119,7 +123,7 @@ function Homepage({ currentSprint }) {
 
             {currentPage === 'finalpage1' && (
                 <div>
-                    <FinalPage1 currentSprint={currentSprint}/>
+                    <FinalPage1 currentSprint={currentSprint} jiraInstance={jiraInstance}/>
                 </div>
             )}
   

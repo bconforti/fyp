@@ -15,57 +15,68 @@
 .sprintH1 {
     margin-top: 40px;
     white-space: nowrap;
-    left:175px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 .sprintH2 {
     margin-top: 30px;
     white-space: nowrap;
     font-size: 20px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .sprintNum {
     position: absolute;
-    left:270px;
+    left: 50%;
     top: 200px;
+    transform: translateX(-50%);
 }
 .startDate {
     position: absolute;
-    left:185px;
+    left: 35%;
     top: 300px;
+    transform: translateX(-50%);
 }
 .endDate {
     position: absolute;
-    left:405px;
+    left: 65%;
     top: 300px;
+    transform: translateX(-50%);
 }
 
 .sprintBox {
     position: absolute;
-    left:295px;
+    left: 50%;
     top: 230px;
-    height:20px;
+    transform: translateX(-50%);
+    height: 20px;
     width: 50px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
 }
 .startDateBox {
     position: absolute;
-    left:185px;
+    left: 35%;
     top: 325px;
-    height:20px;
+    transform: translateX(-50%);
+    height: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 .endDateBox {
     position: absolute;
-    left:400px;
+    left: 65%;
     top: 325px;
-    height:20px;
+    transform: translateX(-50%);
+    height: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .sprintSubmitButton {
     background-color: #4caf50;
     color: #fff;
-    padding: 2% 3%;
+    padding: 1% 2%;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -74,5 +85,6 @@
     transition: background-color 0.3s ease;
     position: absolute;
     bottom: 50px; 
-    left: 280px
+    left: 50%;
+    transform: translateX(-50%);
 }

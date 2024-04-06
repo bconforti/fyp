@@ -3,6 +3,8 @@ import './page1.css';
 import Homepage from '../homepage/Homepage';
 import Page2 from '../page2/Page2';
 
+/* User can enter comment about this sprint 
+They can select whether it was a success or challgenge for that sprint*/
 function Page1({currentSprint}) {
   const [comment, setComment] = useState('');
   const [outcome, setOutcome] = useState('success');
@@ -46,10 +48,12 @@ function Page1({currentSprint}) {
           className='form1'
           onSubmit={handleSubmit}
         >
-          <h1> Successes and Challenges </h1>
+          <h1 className='header1'> Gather Insights </h1>
           <label>Enter Success or Challenge:</label>
           <textarea
             required
+            data-testid="comment-input"
+            id="commentInput"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           ></textarea>
@@ -74,9 +78,7 @@ function Page1({currentSprint}) {
             {currentPage === 'page1' ? 'See comments' : 'Add another comment'}
           </button>
 
-          <button
-            className="infoButton"
-          >
+          <button className="infoButton">
             i
             <div className="infoPopup">
               Add any comments you have about this sprint. <br />

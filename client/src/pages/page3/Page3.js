@@ -4,6 +4,7 @@ import Homepage from '../homepage/Homepage';
 import Page4 from '../page4/Page4';
 import Page5 from '../page5/Page5';
 
+/* Emotion tracking page - user clicks emoticon button which best corresponds to their feeling about the sprint */
 function Page3({currentSprint}) {
   const [currentPage, setCurrentPage] = useState('page3');
   const [emotion, setEmotion] = useState([]);
@@ -53,13 +54,14 @@ function Page3({currentSprint}) {
     <div>
       {currentPage === 'page3' && (
         <form className="form3">
-          <h1> Emotion Tracking</h1>
+          <h1 className="header3"> Set the Stage</h1>
           
           <h2> How are you feeling at this stage of development?</h2>
           <button 
           className = "infoButton">
             i
             <div className="infoPopup">   
+                Click the button which best desribes how you are feeling at ths stage of development.
                 😆: Excellent< br/>
                 😅: Good< br/>
                 😶: Neutral< br/>

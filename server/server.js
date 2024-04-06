@@ -3,9 +3,22 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
+const axios = require('axios');
+
+const jiraCred = 'bcconforti@gmail.com:ATATT3xFfGF0Imb0Xrdcf8tzI0FOHpY8-MHGhmdVnRQrdmvDy7SOKGFmX30mslMhovwlozAbsoRVsq0aYkbiPN6NnOT-vHjN4oRM3oEDYF9qVe0XYvCt-5Lhk6shZX_g06ZdqPdRFVj4Z22Svt8ANXYg_qB-x3pwMVHhFcDReJdDYeOMar5WoVM=D29B4589'
+const jiraURL = 'https://bcconforti.atlassian.net/'
+const jiraURLS = {};
+
 
 // Using middleware since using different port for frontend & backend
+
 app.use(cors());
+{/*
+const corsOptions = {
+    origin: 'https://youretro.netlify.app',
+    optionsSuccessStatus: 200 
+}
+app.use(cors(corsOptions)); */}
 app.use(bodyParser.json());
 
 /* Connecting to the database */
@@ -23,7 +36,7 @@ const db = new sqlite3.Database("./database.db", sqlite3.OPEN_READWRITE | sqlite
             id INTEGER PRIMARY KEY,
             username TEXT UNIQUE,
             password TEXT,
-            role TEXT
+            code TEXT
         )
     `, (err) => {
         if (err) {
@@ -64,6 +77,22 @@ const db = new sqlite3.Database("./database.db", sqlite3.OPEN_READWRITE | sqlite
             process.exit(1);
         }
     });
+
+
+    db.run(`
+        CREATE TABLE IF NOT EXISTS replies (
+            id INTEGER PRIMARY KEY,
+            comment_id INTEGER,
+            reply TEXT,
+            FOREIGN KEY (comment_id) REFERENCES comments(id)
+        )
+    `, (err) => {
+        if (err) {
+            console.error('Error creating table:', err.message);
+            process.exit(1);
+        }
+    });
+
 
     /* Creating emotion tracking table if it does not already exist */
     db.run(`
@@ -109,6 +138,34 @@ const db = new sqlite3.Database("./database.db", sqlite3.OPEN_READWRITE | sqlite
             process.exit(1);
         }
     });
+
+    db.run(`
+        CREATE TABLE IF NOT EXISTS comment_answers (
+            id INTEGER PRIMARY KEY,
+            answer TEXT,
+            topcomment INTEGER, 
+            FOREIGN KEY (topcomment) REFERENCES comments(id) ON DELETE CASCADE
+        )
+    `, (err) => {
+        if (err) {
+            console.error('Error creating table:', err.message);
+            process.exit(1);
+        }
+    });
+
+    db.run(`
+        CREATE TABLE IF NOT EXISTS suggestion_answers (
+            id INTEGER PRIMARY KEY,
+            answer TEXT,
+            topsuggestion INTEGER, 
+            FOREIGN KEY (topsuggestion) REFERENCES comments(id) ON DELETE CASCADE
+        )
+    `, (err) => {
+        if (err) {
+            console.error('Error creating table:', err.message);
+            process.exit(1);
+        }
+    });
 });
 
 
@@ -117,11 +174,11 @@ const db = new sqlite3.Database("./database.db", sqlite3.OPEN_READWRITE | sqlite
 /* Inserting user+pass to table when user registers*/
 
 app.post('/api/register', (req, res) => {
-    const { username, password, role } = req.body;
+    const { username, password, code } = req.body;
 
     db.run(
-        'INSERT INTO users (username, password, role) VALUES (?,?, ?)',
-        [username, password, role],
+        'INSERT INTO users (username, password, code) VALUES (?,?, ?)',
+        [username, password, code],
         function (err) {
             if(err) {
                 console.error('Error adding user:', err.message);
@@ -187,8 +244,8 @@ app.post('/api/sprints', (req, res) => {
   
         res.json({
           success: true,
-          message: 'sprint added successfully',
-          commentId: this.lastID,
+          message: 'Sprint added successfully',
+          sprintId: this.lastID,
         });
       }
     );
@@ -254,6 +311,27 @@ app.get('/api/comments', (req, res) => {
 }); 
 
 
+
+/* Deletes comment if resolved */
+app.delete('/api/comments', (req, res) => {
+    const { comment, outcome } = req.body;
+
+    db.run(
+        'DELETE FROM comments WHERE comment = ? AND outcome = ?',
+        [comment, outcome],
+        function (err) {
+            if (err) {
+                console.error('Error deleting comment:', err.message);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+
+            res.json({
+                success: true,
+                message: 'Comment deleted successfully',
+            });
+        });
+});
+
 /* To update vote count when a user votes */
 app.post('/api/votes', (req, res) => {
     const { outcome, comment, votes } = req.body;
@@ -302,21 +380,19 @@ app.get('/api/votes/:outcome/:comment', (req, res) => {
 });
  
 app.post('/api/comments/replies', (req, res) => {
-    const { comment, outcome, reply } = req.body;
-    
-    if (!comment || !outcome || !reply) {
-        return res.status(400).json({ error: 'Comment, outcome, and reply are required' });
+    const { commentId, reply } = req.body;
+
+    if (!commentId || !reply) {
+        return res.status(400).json({ error: 'Comment ID and reply are required' });
     }
-    const key = `${outcome}_${comment}`;
+
+    // Insert the reply into the replies table
     db.run(
-        `
-        INSERT INTO comments (comment, outcome, replies) VALUES (?, ?, ?)
-        ON CONFLICT(comment, outcome) DO UPDATE SET replies = ?
-        `,
-        [comment, outcome, reply, reply],
+        'INSERT INTO replies (comment_id, reply) VALUES (?, ?)',
+        [commentId, reply],
         function (err) {
             if (err) {
-                console.error('Error adding or updating reply:', err.message);
+                console.error('Error adding reply:', err.message);
                 return res.status(500).json({ error: 'Internal Server Error' });
             }
 
@@ -327,6 +403,21 @@ app.post('/api/comments/replies', (req, res) => {
         }
     );
 });
+
+
+app.get('/api/comments/:commentId/replies', (req, res) => {
+    const { commentId } = req.params;
+
+    // Fetches replies for the specified comment 
+    db.all('SELECT * FROM replies WHERE comment_id = ?', [commentId], (err, replies) => {
+        if (err) {
+            console.error('Error fetching replies:', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        res.json(replies);
+    });
+});
+
 
 
 
@@ -609,9 +700,300 @@ app.get('/api/top_suggestions', (req, res) => {
       });
     });
 });
+
+app.post('/api/commentanswers', (req, res) => {
+    const { answer, topcomment } = req.body;
+
+    if(!answer) {
+        return res.status(400).json({ error: 'Answer is required'})
+    }
+
+    db.run(`INSERT INTO comment_answers (answer, topcomment) VALUES (?, ?)`, [answer, topcomment], function(err) {
+        if (err) {
+            console.error('Error inserting answer:', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        res.json({
+            success: true,
+            message: 'Answer added successfully',
+            id: this.lastID,
+        });    
+    });
+})
+
+app.get('/api/commentanswers/:commentId', (req, res) => {
+    const { commentId } = req.params;
+
+    db.all('SELECT * FROM comment_answers WHERE topcomment = ?', [commentId], (err, commentAnswers) => {
+        if (err) {
+            console.error('Error fetching comment answers:', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        res.json(commentAnswers);
+    });
+
+})
+
+
+app.delete('/api/commentanswers/:answerId', (req,res) => {
+    const { answerId } = req.params;
+
+    if (!answerId) {
+        return res.status(400).json({ error: 'Answer required' });
+    }
+
+    db.run('DELETE FROM comment_answers WHERE id = ?', [answerId], function (err) {
+        if (err) {
+            console.error('Error deleting answer', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
   
+        res.json({ success: true, message: 'Answer deleted successfully' });
+    });
+})
 
 
+app.post('/api/suggestionanswers', (req, res) => {
+    const { answer, topsuggestion } = req.body;
+
+    if(!answer) {
+        return res.status(400).json({ error: 'Answer is required'})
+    }
+
+    db.run(`INSERT INTO suggestion_answers (answer, topsuggestion) VALUES (?, ?)`, [answer, topsuggestion], function(err) {
+        if (err) {
+            console.error('Error inserting answer:', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        res.json({
+            success: true,
+            message: 'Answer added successfully',
+            id: this.lastID,
+        });    
+    });
+})
+
+app.get('/api/suggestionanswers/:suggestionId', (req, res) => {
+    const { suggestionId } = req.params;
+
+    db.all('SELECT * FROM suggestion_answers WHERE topsuggestion = ?', [suggestionId], (err, suggestionAnswers) => {
+        if (err) {
+            console.error('Error fetching suggestion answers:', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        res.json(suggestionAnswers);
+    });
+
+})
+
+app.delete('/api/suggestionanswers/:answerId', (req,res) => {
+    const { answerId } = req.params;
+
+    if (!answerId) {
+        return res.status(400).json({ error: 'Answer required' });
+    }
+
+    db.run('DELETE FROM suggestion_answers WHERE id = ?', [answerId], function (err) {
+        if (err) {
+            console.error('Error deleting answer', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+  
+        res.json({ success: true, message: 'Answer deleted successfully' });
+    });
+})
+
+/* JIRA INTEGRATION HANDLING STARTS HERE */
+// For making Jira API requests
+
+/*
+app.get('/api/jira/board/:instance/:boardId', async (req, res) => {
+    const { instance, boardId } = req.params;
+    const accessToken = req.headers.authorization; 
+
+
+    try {
+        const response = await axios.get(`https://${instance}.atlassian.net/rest/agile/1.0/board/${boardId}/issue`, {
+            params: {
+                startAt: 0,
+                maxResults: 50,
+            },
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching board issues:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+*/
+
+
+app.get('/api/jira/board/:instance/:boardId', async (req, res) => {
+    const { instance, boardId } = req.params;
+
+    try {
+        const response = await axios.get(`https://${instance}.atlassian.net/rest/agile/1.0/board/${boardId}/issue`, {
+            params: {
+                startAt: 0,
+                maxResults: 50,
+            },
+            headers: {
+                Authorization: `Basic ${Buffer.from(jiraCred).toString('base64')}`,
+            }
+        });
+        
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching board issues:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+
+
+app.get('/api/jira/boards/:instance', async (req, res) => {
+    const { instance } = req.params;
+
+    try {
+        const response = await axios.get(`https://${instance}.atlassian.net/rest/agile/1.0/board`, {
+            headers: {
+                Authorization: `Basic ${Buffer.from(jiraCred).toString('base64')}`,
+            }
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching boards:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}); 
+
+app.post('/api/jira/addIssue', async(req, res) => {
+    const {instance, suggestion, projectKey} = req.body;
+
+    try {
+        const response = await axios.post(`https://${instance}.atlassian.net/rest/api/2/issue`, {
+            fields: {
+                project: {
+                    key: projectKey
+                },
+                summary: suggestion,
+                issuetype: {
+                    name: 'Task'}
+                }
+        }, {
+            headers: {
+                Authorization: `Basic ${Buffer.from(jiraCred).toString('base64')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error posting issue', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+{/*
+app.get('/api/jira/boards/:instance', async (req, res) => {
+    const { instance } = req.params;
+    const accessToken = req.headers.authorization.split(' ')[1]; 
+
+    try {
+        const response = await axios.get(`https://${instance}.atlassian.net/rest/agile/1.0/board`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`, 
+            }
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching boards:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+*/}
+
+
+/*
+app.get('/api/jira/board/:boardId', async (req, res) => {
+    const { boardId } = req.params;
+    const { username, password } = req.query;
+
+    const response = await axios.get(`${jiraURL}rest/agile/1.0/board/${boardId}/issue`, {
+        params: {
+            startAt: 0,
+            maxResults: 50,
+        },
+        auth: {
+           username,
+           password
+        },
+    });
+
+    if (response instanceof Error) {
+        console.error('Error fetching board issues:', response.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+        res.json(response.data);
+    }
+});
+
+// To get completed issues to create burnout chart
+app.get('/api/jira/board/:boardId/complete-issues', async (req, res) => {
+    const { boardId } = req.params;
+
+    const response = await axios.get(`${jiraURL}rest/agile/1.0/board/${boardId}/issue`, {
+        params: {
+            jql: 'status = "Done"'
+        },
+        headers: {
+            Authorization: `Basic ${Buffer.from(jiraCred).toString('base64')}`,
+        },
+    });
+
+    // Check for axios request error and handle it
+    if (response instanceof Error) {
+        console.error('Error fetching board issues:', response.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+        res.json(response.data);
+    }
+});
+
+
+app.get('/api/jira/board/:boardId/planned-issues', async (req, res) => {
+    const { boardId } = req.params;
+
+    const response = await axios.get(`${jiraURL}rest/agile/1.0/board/${boardId}/issue`, {
+        params: {
+            jql: 'status = "To Do"'
+        },
+        headers: {
+            Authorization: `Basic ${Buffer.from(jiraCred).toString('base64')}`,
+        },
+    });
+
+    // Check for axios request error and handle it
+    if (response instanceof Error) {
+        console.error('Error fetching board issues:', response.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+        res.json(response.data);
+    }
+});
+
+
+
+
+*/
 
 // Root path route handler
 app.get('/', (req, res) => {
@@ -622,3 +1004,5 @@ app.get('/', (req, res) => {
 app.listen(4000, () => {
     console.log('Server started on port 4000');
 });
+
+module.exports = app;

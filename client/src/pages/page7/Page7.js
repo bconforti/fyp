@@ -74,12 +74,11 @@ function Page7({currentSprint}) {
         return response.json();
       })
       .then((data) => {
-        // Update the state to remove the deleted suggestion
         setSuggestions((prevSuggestions) =>
           prevSuggestions.filter((sugg) => sugg.suggestion !== suggestion)
         );
-        console.log(data); // Log the response from the server
-        // Handle any further actions on success
+        console.log(data); 
+    
       })
       .catch((error) => console.error('Error deleting suggestion:', error));
   };
@@ -98,7 +97,7 @@ function Page7({currentSprint}) {
     <div>
         {currentPage === 'page7' && (
                 <div className='container7'>
-                <h1 className="h7"> Next steps </h1>
+                <h1 className="header7"> Next steps </h1>
 
                 {suggestions.map((suggestion) => (
                   <Draggable key={suggestion.suggestionId}>

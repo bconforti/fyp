@@ -4,12 +4,14 @@ import Homepage from "../homepage/Homepage";
 import Page3 from "../page3/Page3";
 import Page5 from '../page5/Page5';
 
+/* Emotion tracking page 2 - user rates their progress of the previous sprint */
 function Page4({currentSprint}) {
     const [sliderValue, setSliderValue] = useState(0);
     const [scores, setScores] = useState([]);
     const [currentPage, setCurrentPage] = useState('page4')
 
 
+    // User can move slider to select rating
     const handleSliderChange = (event) => {
         const value = event.target.value;
         setSliderValue(value);
@@ -54,11 +56,12 @@ function Page4({currentSprint}) {
         <div>
             {currentPage === 'page4' && (
                 <form className="form4">
-                <h1>Emotion Tracking</h1>
-                <h2>How would you rate the progress of this project?</h2>
+                <h1 className="header4">Set the Stage</h1>
+                <h2>How would you rate the progress over this sprint?</h2>
                 <button className = "infoButton4">
                 i
                 <div className="infoPopup4">
+                    Drag the slider below to indicate your rating of the progress made during this sprint. <br />
                     0: No progression/project is not going well. <br />
                     10: Project is moving at exceptional pace, everything 
                     is as expected.

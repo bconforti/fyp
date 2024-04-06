@@ -1,0 +1,122 @@
+.container9c {
+    background-color: #fff;
+    padding: 45px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    height: 70vh;
+    width: 900px;
+    margin: 80px auto;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.header9c {
+    position: absolute;
+    left: 400px;
+}
+
+.left9,
+.right9,
+.middle9 {
+    flex: 1;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+.leftBox {
+    position: relative;
+    width: 175px;
+    height: 30px;
+    padding: 20px;
+    margin: 10px 0px;
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    justify-content: center;
+    background-color: #aaffaa61;
+    border: 0.5px solid #aaffaa;
+}
+
+.middleBox {
+    position: relative;
+    width: 175px;
+    height: 30px;
+    padding: 20px;
+    margin: 10px 0px;
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    justify-content: center;
+    background-color: #aad2ff70;
+    border: 0.5px solid #aad2ff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.rightBox {
+    position: relative;
+    width: 175px; 
+    height: 30px;
+    padding: 20px;
+    margin: 10px 0px;
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    justify-content: center;
+    background-color: #ffaaaa64;
+    border: 0.5px solid #ffaaaa;
+}
+.exitButton9 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    font-size:20px;
+    background-color: transparent;
+    border:none;
+    color: #c1c6c8;
+}
+
+.iTitle {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-style: italic;
+    color: #747676;
+}
+.iStatus {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: #4c4d4d;
+}
+
+.nextButton9c {
+    background-color: #c1c6c8;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 10px; 
+    right: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.backButton9c {
+    background-color: #c1c6c8;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 10px; 
+    left: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
