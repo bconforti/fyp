@@ -32,44 +32,35 @@ function Homepage({ currentSprint, jiraInstance }) {
                     <h2 className="homeh2">Begin your retrospective</h2>
                     <div>
                         <button className="hbutton1" onClick={() => handleNavigate('page3')}>
-                            Set the Stage
+                               Set the Stage
                         </button>
-                        <input type="checkbox" className="check1"></input>
                     </div>
 
-                    <p className="arr1">&#8680;</p>
 
                     <div>
                         <button className="hbutton2" onClick={() => handleNavigate('page9')}>
                             Gather Data
                         </button>
-                        <input type="checkbox" className="check2"></input>
                     </div>
 
-                    <p className="arr2">&#8681;</p>
 
                     <div>
                         <button className="hbutton3" onClick={() => handleNavigate('page1')}>
                             Gather Insights
                         </button>
-                        <input type="checkbox" className="check3"></input>
                     </div>
 
-                    <p className="arr3">&#8680;</p>
 
                     <div>
                         <button className="hbutton4" onClick={() => handleNavigate('page6')}>
                             Next Steps
                         </button>
-                        <input type="checkbox" className="check4"></input>
                     </div>
-                    <p className="arr4">&#8680;</p>
 
                     <div>
                         <button className="hbutton5" onClick={() => handleNavigate('finalpage1')}>
                             Close the Retrospective
                         </button>
-                        <input type="checkbox" className="check5"></input>
                     </div>
                 </form>
                 </div>
